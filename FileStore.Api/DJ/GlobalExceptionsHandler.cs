@@ -11,7 +11,7 @@ public class GlobalExceptionHandler(ILogger<GlobalExceptionHandler> logger) : IE
 
         if (exception is FluentValidation.ValidationException fluentException)
         {
-            problemDetails.Title = "One or more validation errors occurred.";
+            problemDetails.Title = "Validation error.";
             httpContext.Response.StatusCode = StatusCodes.Status400BadRequest;
             var validationErrors = fluentException.Errors.Select(error => error.ErrorMessage).ToList();
             problemDetails.Extensions.Add("errors", validationErrors);
