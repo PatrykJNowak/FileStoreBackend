@@ -10,9 +10,10 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddControllers();
 
 var configuration = builder.Configuration;
-var cs = configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<DatabaseContext>(options =>
     options.UseNpgsql(configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddMediatR(opt => opt.RegisterServicesFromAssemblies(typeof(Program).Assembly));
 
 var app = builder.Build();
 

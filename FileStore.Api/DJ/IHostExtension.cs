@@ -2,7 +2,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FileStore.Api.DJ;
 
-public static class IHostExtension
+public static class HostExtension
 {
     public static void MigrateDbContext<TContext>(this IHost host)
         where TContext : DbContext
