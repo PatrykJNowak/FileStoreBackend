@@ -1,6 +1,5 @@
 using System.Reflection;
 using FileStore.Api.DJ;
-using FileStore.Domain;
 using FileStore.Domain.Entity;
 using FileStore.Infrastructure;
 using FluentValidation;
@@ -52,5 +51,6 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.MapIdentityApi<User>();
 app.MapControllers();
 app.Run();
