@@ -1,7 +1,10 @@
 using System.Reflection;
 using FileStore.Api.DJ;
 using FileStore.Domain;
+using FileStore.Domain.Entity;
+using FileStore.Infrastructure;
 using FluentValidation;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,10 +15,19 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddControllers();
 
 var configuration = builder.Configuration;
-builder.Services.AddDbContext<DatabaseContext>(options =>
-    options.UseNpgsql(configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddDbContext<DatabaseContext>(opt =>
+    opt.UseNpgsql(configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+
+builder.Services.AddAuthorization();
+builder.Services.AddAuthentication().AddCookie(IdentityConstants.ApplicationScheme);
+builder.Services.AddIdentityCore<User>()
+    .AddEntityFrameworkStores<IdentityDatabaseContext>()
+    .AddApiEndpoints();
+
+builder.Services.AddDbContext<IdentityDatabaseContext>(opt =>
+    opt.UseNpgsql(configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddMediatR(opt =>
 {
@@ -30,6 +42,7 @@ builder.Services.AddProblemDetails();
 var app = builder.Build();
 
 app.MigrateDbContext<DatabaseContext>();
+app.MigrateDbContext<IdentityDatabaseContext>();
 app.UseExceptionHandler();
 
 // Configure the HTTP request pipeline.

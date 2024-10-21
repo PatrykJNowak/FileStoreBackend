@@ -1,15 +1,14 @@
 using FileStore.Domain.Entity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 
-namespace FileStore.Domain;
+namespace FileStore.Infrastructure;
 
 public class DatabaseContext : DbContext
 {
-    private readonly IConfiguration _configuration;
     public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options)
     {
     }
 
+    public DbSet<User> IdentityUsers { get; set; }
     public DbSet<Files> Tests { get; set; }
 }
