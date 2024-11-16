@@ -20,7 +20,7 @@ public class GlobalExceptionHandler(ILogger<GlobalExceptionHandler> logger) : IE
                 problemDetails.Extensions.Add("errorMessage", validationErrors);
                 break;
             }
-            case UnauthorizeException _:
+            case UnauthorizedException _:
                 problemDetails.Title = "Unauthorized";
                 httpContext.Response.StatusCode = StatusCodes.Status401Unauthorized;
                 break;
