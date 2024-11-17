@@ -1,5 +1,5 @@
 using FileStore.Api.DJ.Exception;
-using FileStore.Infrastructure.Interfaces;
+using FileStore.Domain.Interfaces;
 using MediatR;
 
 namespace FileStore.Api.UseCases;

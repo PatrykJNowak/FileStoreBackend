@@ -1,9 +1,9 @@
 using System.Reflection;
 using FileStore.Api.DJ;
-using FileStore.Api.Repository;
 using FileStore.Domain.Entity;
+using FileStore.Domain.Interfaces;
 using FileStore.Infrastructure;
-using FileStore.Infrastructure.Interfaces;
+using FileStore.Infrastructure.Repository;
 using FluentValidation;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;

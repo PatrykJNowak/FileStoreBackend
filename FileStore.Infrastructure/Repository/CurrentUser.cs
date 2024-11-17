@@ -1,12 +1,13 @@
 using System.Security.Claims;
-using FileStore.Infrastructure.Interfaces;
+using FileStore.Domain.Interfaces;
+using Microsoft.AspNetCore.Http;
 
-namespace FileStore.Api.Repository;
+namespace FileStore.Infrastructure.Repository;
 
 public class CurrentUser : ICurrentUser
 {
     public string? UserId { get; }
-    public string? Username { get; }
+    public string? UserName { get; }
 
     public CurrentUser(IHttpContextAccessor httpContextAccessor)
     {
@@ -16,6 +17,6 @@ public class CurrentUser : ICurrentUser
             return;
 
         UserId = claimsPrincipal.FindFirstValue(ClaimTypes.NameIdentifier);
-        UserId = claimsPrincipal.FindFirstValue(ClaimTypes.Name);
+        UserName = claimsPrincipal.FindFirstValue(ClaimTypes.Name);
     }
 }
