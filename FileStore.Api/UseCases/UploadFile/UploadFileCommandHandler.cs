@@ -25,6 +25,8 @@ public class UploadFileCommandHandler : IRequestHandler<UploadFileCommand, Unit>
             FileSize = (int) request.File.Length / 1024,
             FileName = request.File.FileName
         }, ct);
+
+        await _dbContext.SaveChangesAsync(ct);
         
         // TODO: add user id here
         

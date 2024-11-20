@@ -14,21 +14,34 @@ public class FileService : IFileService
         CreateDirectoryIfNotExists(_storePath);
     }
 
-    public async Task<MemoryStream> GetFileByIdAsync(Guid fileId)
+    public async Task<MemoryStream> GetFileByIdAsync(Guid fileId, CancellationToken ct)
     {
-        throw new NotImplementedException();
+        var filePath = Path.Combine(_storePath, fileId.ToString());
+
+        var memoryStream = new MemoryStream();
+
+        await using (var fileStream = new FileStream(Path.Combine(filePath, fileId.ToString()), FileMode.Open, FileAccess.Read))
+        {
+            await fileStream.CopyToAsync(memoryStream, ct);
+        }
+
+        memoryStream.Position = 0;
+        return memoryStream;
     }
 
     public async Task<Guid> UploadAsync(IFormFile file, CancellationToken ct)
     {
         var fileId = Guid.NewGuid();
 
-        var path = Path.Combine(_storePath, fileId.ToString());
+        var filePath = Path.Combine(_storePath, fileId.ToString());
 
-        CreateDirectoryIfNotExists(path);
+        CreateDirectoryIfNotExists(filePath);
 
-        await file.CopyToAsync(new FileStream(Path.Combine(path, fileId.ToString()), FileMode.Create), ct);
-
+        await using (var fileStream = new FileStream(Path.Combine(filePath, fileId.ToString()), FileMode.Create, FileAccess.Write))
+        {
+            await file.CopyToAsync(fileStream, ct);
+        }
+        
         return fileId;
     }
 

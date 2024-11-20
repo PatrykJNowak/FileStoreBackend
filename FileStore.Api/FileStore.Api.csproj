@@ -33,10 +33,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="UseCases\" />
-    </ItemGroup>
-
-    <ItemGroup>
       <Compile Remove="UseCases\TestRequest.cs" />
       <Compile Remove="UseCases\TestRequestHandler.cs" />
     </ItemGroup>

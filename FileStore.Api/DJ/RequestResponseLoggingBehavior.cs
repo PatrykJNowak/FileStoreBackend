@@ -16,9 +16,9 @@ public class RequestResponseLoggingBehavior<TRequest, TResponse>(ILogger<Request
         
         var response = await next();
         
-        var responseJson = JsonSerializer.Serialize(response);
-        
-        logger.LogInformation($"Response response {correlationId}: {responseJson}");
+        // var responseJson = JsonSerializer.Serialize(response);
+        //
+        // logger.LogInformation($"Response response {correlationId}: {responseJson}");
 
         return response;
     }
