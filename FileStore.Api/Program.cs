@@ -5,6 +5,7 @@ using FileStore.Domain.Interfaces;
 using FileStore.Infrastructure;
 using FileStore.Infrastructure.Repository;
 using FluentValidation;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
@@ -57,7 +58,17 @@ builder.Services.AddIdentityApiEndpoints<User>()
     .AddEntityFrameworkStores<IdentityDatabaseContext>()
     .AddApiEndpoints();
 
+builder.Services.Configure<FileStoreSettings>(
+    builder.Configuration.GetSection("FileStoreSettings")
+);
+
+builder.Services.Configure<FormOptions>(opt =>
+{
+    opt.MultipartBodyLengthLimit = long.MaxValue;
+});
+
 builder.Services.AddScoped<ICurrentUser, CurrentUser>();
+builder.Services.AddScoped<IFileService, FileService>();
 
 builder.Services.AddMediatR(opt =>
 {
@@ -71,7 +82,7 @@ builder.Services.AddProblemDetails();
 
 var app = builder.Build();
 
-app.MapSwagger().RequireAuthorization();
+// app.MapSwagger().RequireAuthorization();
 app.MigrateDbContext<DatabaseContext>();
 app.MigrateDbContext<IdentityDatabaseContext>();
 app.UseExceptionHandler();

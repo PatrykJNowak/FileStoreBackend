@@ -1,12 +1,13 @@
 using FileStore.Domain.Entity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using File = FileStore.Domain.Entity.File;
 
 namespace FileStore.Infrastructure.EntityTypeConfiguration;
 
-public class FilesEntityTypeConfiguration : IEntityTypeConfiguration<Files>
+public class FilesEntityTypeConfiguration : IEntityTypeConfiguration<File>
 {
-    public void Configure(EntityTypeBuilder<Files> builder)
+    public void Configure(EntityTypeBuilder<File> builder)
     {
         builder.ToTable("Files");
 

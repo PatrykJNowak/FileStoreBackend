@@ -27,4 +27,22 @@
       <ProjectReference Include="..\FileStore.Infrastructure\FileStore.Infrastructure.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Compile Remove="Controllers\TestController.cs" />
+      <Compile Remove="UseCases\TestRequest.cs" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="UseCases\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Remove="UseCases\TestRequest.cs" />
+      <Compile Remove="UseCases\TestRequestHandler.cs" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="UseCases\" />
+    </ItemGroup>
+
 </Project>
