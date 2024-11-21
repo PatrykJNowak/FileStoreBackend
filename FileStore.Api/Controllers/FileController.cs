@@ -20,7 +20,10 @@ public class FileController : ControllerBase
             FileId = fileId
         }, ct);
 
-        return File(file.Stream, "application/octet-stream", file.FileName);
+        var resultFile = File(file.Stream, "application/octet-stream", file.FileName);
+        resultFile.EnableRangeProcessing = true;
+
+        return resultFile;
     }
 
     [HttpPost("upload")]
