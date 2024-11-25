@@ -22,7 +22,7 @@ public class UploadFileCommandHandler : IRequestHandler<UploadFileCommand, Unit>
         await _dbContext.File.AddAsync(new()
         {
             Id = fileId,
-            FileSize = (int) request.File.Length / 1024,
+            FileSize = (int) (request.File.Length / 1024),
             FileName = request.File.FileName
         }, ct);
 

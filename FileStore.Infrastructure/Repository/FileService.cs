@@ -11,48 +11,55 @@ public class FileService : IFileService
     public FileService(IOptions<FileStoreSettings> options)
     {
         _storePath = options.Value.StorePath; // Get the StorePath from the settings
-        CreateDirectoryIfNotExists(_storePath);
+        if (!Directory.Exists(_storePath))
+            Directory.CreateDirectory(_storePath);
     }
 
-    public async Task<MemoryStream> GetFileByIdAsync(Guid fileId, CancellationToken ct)
+    public async Task<FileStream> GetFileByIdAsync(Guid fileId)
     {
-        var filePath = Path.Combine(_storePath, fileId.ToString());
-
-        var memoryStream = new MemoryStream();
-
-        await using (var fileStream = new FileStream(Path.Combine(filePath, fileId.ToString()), FileMode.Open, FileAccess.Read))
-        {
-            await fileStream.CopyToAsync(memoryStream, ct);
-        }
-
-        memoryStream.Position = 0;
-        return memoryStream;
+        return new FileStream(CreateFilePath(fileId), FileMode.Open, FileAccess.Read, FileShare.Read);
     }
 
     public async Task<Guid> UploadAsync(IFormFile file, CancellationToken ct)
     {
         var fileId = Guid.NewGuid();
 
-        var filePath = Path.Combine(_storePath, fileId.ToString());
+        CreateDirectoryIfNotExists(fileId);
 
-        CreateDirectoryIfNotExists(filePath);
+        await using var fileStream = new FileStream(CreateFilePath(fileId), FileMode.Create, FileAccess.Write);
+        await file.CopyToAsync(fileStream, ct);
 
-        await using (var fileStream = new FileStream(Path.Combine(filePath, fileId.ToString()), FileMode.Create, FileAccess.Write))
-        {
-            await file.CopyToAsync(fileStream, ct);
-        }
-        
         return fileId;
     }
 
     public async Task DeleteByIdAsync(Guid fileId)
     {
-        throw new NotImplementedException();
+        if (FileExists(fileId))
+            Directory.Delete(CreateDirectoryPath(fileId), true);
     }
 
-    private void CreateDirectoryIfNotExists(string directoryPath)
+    private bool FileExists(Guid fileId)
     {
+        var filePath = Path.Combine(_storePath, fileId.ToString(), fileId.ToString());
+
+        return File.Exists(filePath);
+    }
+
+    private void CreateDirectoryIfNotExists(Guid fileId)
+    {
+        var directoryPath = Path.Combine(_storePath, fileId.ToString());
+
         if (!Directory.Exists(directoryPath))
             Directory.CreateDirectory(directoryPath);
+    }
+
+    private string CreateFilePath(Guid fileId)
+    {
+        return Path.Combine(_storePath, fileId.ToString(), fileId.ToString());
+    }
+
+    private string CreateDirectoryPath(Guid fileId)
+    {
+        return Path.Combine(_storePath, fileId.ToString());
     }
 }

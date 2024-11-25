@@ -1,3 +1,4 @@
+using System.Reflection.Metadata;
 using System.Text.Json;
 using MediatR;
 
@@ -9,17 +10,27 @@ public class RequestResponseLoggingBehavior<TRequest, TResponse>(ILogger<Request
     public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
     {
         var correlationId = Guid.NewGuid();
-        
+
         var requestJson = JsonSerializer.Serialize(request);
-        
+
         logger.LogInformation($"Handling request {correlationId}: {requestJson}");
-        
+
         var response = await next();
+
+        var responseJson = string.Empty;
         
-        var responseJson = response!.GetType() == typeof(MemoryStream)
-            ? $"{nameof(MemoryStream)}"
-            : JsonSerializer.Serialize(response);
-            
+        try
+        {
+            responseJson = response!.GetType() == typeof(MemoryStream)
+                ? $"{nameof(MemoryStream)}"
+                : JsonSerializer.Serialize(response);
+        }
+        catch
+        {
+            responseJson = $"Serialization failed";
+        }
+
+
         logger.LogInformation($"Response response {correlationId}: {responseJson}");
 
         return response;

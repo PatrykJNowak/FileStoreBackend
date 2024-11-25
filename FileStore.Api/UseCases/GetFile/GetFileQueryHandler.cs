@@ -23,7 +23,7 @@ public class GetFileQueryHandler : IRequestHandler<GetFileQuery, GetFileDto>
         return new GetFileDto()
         {
             FileName = file.FileName,
-            Stream = await _fileService.GetFileByIdAsync(request.FileId, ct)
+            Stream = await _fileService.GetFileByIdAsync(request.FileId)
         };
     }
 }
