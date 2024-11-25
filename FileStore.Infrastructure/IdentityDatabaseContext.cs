@@ -1,4 +1,4 @@
-using FileStore.Domain.Entity;
+using FileStore.Domain.IdentityEntity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 

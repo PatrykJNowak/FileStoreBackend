@@ -1,7 +1,6 @@
-using FileStore.Domain.Entity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using File = FileStore.Domain.Entity.File;
+using File = FileStore.Domain.Entities.File;
 
 namespace FileStore.Infrastructure.EntityTypeConfiguration;
 

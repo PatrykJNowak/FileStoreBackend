@@ -1,6 +1,6 @@
 using System.Reflection;
 using FileStore.Api.DJ;
-using FileStore.Domain.Entity;
+using FileStore.Domain.IdentityEntity;
 using FileStore.Domain.Interfaces;
 using FileStore.Infrastructure;
 using FileStore.Infrastructure.Repository;

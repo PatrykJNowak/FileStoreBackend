@@ -3,11 +3,13 @@ using FileStore.Api.UseCases.GetFile;
 using FileStore.Api.UseCases.GetFileInfo;
 using FileStore.Api.UseCases.UploadFile;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FileStore.Api.Controllers;
 
 [ApiController]
+[Authorize]
 [Route("[controller]/api")]
 public class FileController : ControllerBase
 {
@@ -32,7 +34,7 @@ public class FileController : ControllerBase
             FileId = fileId
         }, ct);
 
-        return  File(file.Stream, "application/octet-stream", file.FileName, enableRangeProcessing: true);
+        return Ok(File(file.Stream, "application/octet-stream", file.FileName, enableRangeProcessing: true));
     }
 
     [HttpPost]
