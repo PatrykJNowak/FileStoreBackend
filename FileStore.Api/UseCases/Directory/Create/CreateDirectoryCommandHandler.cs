@@ -4,7 +4,7 @@ using MediatR;
 
 namespace FileStore.Api.UseCases.Directory.Create;
 
-public class CreateDirectoryCommandHandler : IRequestHandler<CreateDirectoryCommand, Unit>
+public class CreateDirectoryCommandHandler : IRequestHandler<CreateDirectoryCommand, Guid>
 {
     private readonly DatabaseContext _dbContext;
     private readonly ICurrentUser _currentUser;
@@ -15,10 +15,13 @@ public class CreateDirectoryCommandHandler : IRequestHandler<CreateDirectoryComm
         _currentUser = currentUser;
     }
 
-    public async Task<Unit> Handle(CreateDirectoryCommand request, CancellationToken ct)
+    public async Task<Guid> Handle(CreateDirectoryCommand request, CancellationToken ct)
     {
+        var newDirectoryId = Guid.NewGuid();
+        
         await _dbContext.Directory.AddAsync(new()
         {
+            Id = newDirectoryId,
             DirectoryName = request.DirectoryName,
             ParentDirectoryId = request.ParentDirectoryId,
             CreatedAt = DateTime.UtcNow,
@@ -27,6 +30,6 @@ public class CreateDirectoryCommandHandler : IRequestHandler<CreateDirectoryComm
 
         await _dbContext.SaveChangesAsync(ct);
 
-        return Unit.Value;
+        return newDirectoryId;
     }
 }

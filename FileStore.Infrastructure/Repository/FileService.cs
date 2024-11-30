@@ -38,6 +38,16 @@ public class FileService : IFileService
             Directory.Delete(CreateDirectoryPath(fileId), true);
     }
 
+    public async Task DeleteByIdsAsync(List<Guid> fileIds)
+    {
+        foreach (var fileId in fileIds)
+        {
+            if (FileExists(fileId))
+                Directory.Delete(CreateDirectoryPath(fileId), true);
+        }
+
+    }
+
     private bool FileExists(Guid fileId)
     {
         var filePath = Path.Combine(_storePath, fileId.ToString(), fileId.ToString());

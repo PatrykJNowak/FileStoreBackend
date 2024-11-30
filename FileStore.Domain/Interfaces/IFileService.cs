@@ -7,5 +7,6 @@ public interface IFileService
     public Task<FileStream> GetFileByIdAsync(Guid fileId);
     public Task<Guid> UploadAsync(IFormFile file, CancellationToken ct);
     public Task DeleteByIdAsync(Guid fileId);
+    public Task DeleteByIdsAsync(List<Guid> fileIds);
     
 }
