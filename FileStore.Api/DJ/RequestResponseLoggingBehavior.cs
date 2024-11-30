@@ -30,7 +30,6 @@ public class RequestResponseLoggingBehavior<TRequest, TResponse>(ILogger<Request
             responseJson = $"Serialization failed";
         }
 
-
         logger.LogInformation($"Response response {correlationId}: {responseJson}");
 
         return response;

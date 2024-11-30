@@ -5,10 +5,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FileStore.Api.UseCases.Directory.Create;
 
-public class CreateDirectoryValidator : AbstractValidator<CreateDirectoryCommand>
+public class CreateDirectoryCommandValidator : AbstractValidator<CreateDirectoryCommand>
 {
     private readonly DatabaseContext _dbContext;
-    public CreateDirectoryValidator(DatabaseContext dbContext)
+    public CreateDirectoryCommandValidator(DatabaseContext dbContext)
     {
         _dbContext = dbContext;
         
