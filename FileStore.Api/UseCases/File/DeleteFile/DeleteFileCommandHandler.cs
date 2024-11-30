@@ -3,7 +3,7 @@ using FileStore.Infrastructure;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace FileStore.Api.UseCases.DeleteFile;
+namespace FileStore.Api.UseCases.File.DeleteFile;
 
 public class DeleteFileCommandHandler : IRequestHandler<DeleteFileCommand, Unit>
 {
@@ -23,7 +23,7 @@ public class DeleteFileCommandHandler : IRequestHandler<DeleteFileCommand, Unit>
         await _fileService.DeleteByIdAsync(file.Id);
 
         await _dbContext.File.Where(x => x.Id == file.Id).ExecuteDeleteAsync(ct);
-        
+
         await _dbContext.SaveChangesAsync(ct);
 
         return Unit.Value;

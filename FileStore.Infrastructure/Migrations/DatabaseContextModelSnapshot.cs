@@ -22,7 +22,7 @@ namespace FileStore.Infrastructure.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("FileStore.Domain.Entities.File", b =>
+            modelBuilder.Entity("FileStore.Domain.Entities.Directory", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -31,8 +31,29 @@ namespace FileStore.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<Guid>("CreatedBy")
+                    b.Property<string>("DirectoryName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("OwnerId")
                         .HasColumnType("uuid");
+
+                    b.Property<Guid?>("ParentDirectoryId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Directory");
+                });
+
+            modelBuilder.Entity("FileStore.Domain.Entities.File", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<Guid>("DirectoryId")
                         .HasColumnType("uuid");
@@ -44,13 +65,12 @@ namespace FileStore.Infrastructure.Migrations
                     b.Property<int>("FileSize")
                         .HasColumnType("integer");
 
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<Guid>("UpdatedBy")
+                    b.Property<Guid>("OwnerId")
                         .HasColumnType("uuid");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("DirectoryId");
 
                     b.ToTable("File");
                 });
@@ -105,6 +125,22 @@ namespace FileStore.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("IdentityUsers");
+                });
+
+            modelBuilder.Entity("FileStore.Domain.Entities.File", b =>
+                {
+                    b.HasOne("FileStore.Domain.Entities.Directory", "Directory")
+                        .WithMany("File")
+                        .HasForeignKey("DirectoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Directory");
+                });
+
+            modelBuilder.Entity("FileStore.Domain.Entities.Directory", b =>
+                {
+                    b.Navigation("File");
                 });
 #pragma warning restore 612, 618
         }
