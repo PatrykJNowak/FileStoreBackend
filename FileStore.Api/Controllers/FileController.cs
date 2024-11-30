@@ -1,6 +1,7 @@
 using FileStore.Api.UseCases.File.DeleteFile;
 using FileStore.Api.UseCases.File.GetFile;
 using FileStore.Api.UseCases.File.GetFileInfo;
+using FileStore.Api.UseCases.File.GetFileList;
 using FileStore.Api.UseCases.File.UploadFile;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -13,6 +14,20 @@ namespace FileStore.Api.Controllers;
 [Route("[controller]/api")]
 public class FileController : ControllerBase
 {
+    [HttpGet("GetFileList")]
+    public async Task<ActionResult<List<GetFileListQuery>>> GetFileList(
+        [FromServices] IMediator mediator,
+        Guid directoryId,
+        CancellationToken ct)
+    {
+        var response = await mediator.Send(new GetFileListQuery()
+        {
+            DirectoryId = directoryId,
+        }, ct);
+
+        return Ok(response);
+    }
+    
     [HttpGet("GetAll")]
     public async Task<ActionResult<List<GetFileInfoDto>>> GetFileInfo(
         [FromServices] IMediator mediator,

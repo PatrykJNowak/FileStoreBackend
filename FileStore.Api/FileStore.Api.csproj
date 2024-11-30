@@ -37,8 +37,4 @@
       <Compile Remove="UseCases\TestRequestHandler.cs" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="UseCases\File\" />
-    </ItemGroup>
-
 </Project>
