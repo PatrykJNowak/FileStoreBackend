@@ -1,6 +1,7 @@
 using FileStore.Api.UseCases.File.DeleteFile;
 using FileStore.Api.UseCases.File.GetFile;
 using FileStore.Api.UseCases.File.GetFileList;
+using FileStore.Api.UseCases.File.GetUserUsedSize;
 using FileStore.Api.UseCases.File.UploadFile;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -23,6 +24,16 @@ public class FileController : ControllerBase
         {
             DirectoryId = directoryId,
         }, ct);
+
+        return Ok(response);
+    }
+    
+    [HttpGet("UsedSize")]
+    public async Task<ActionResult<GetUserUsedSizeDto>> GetUserUsedSize(
+        [FromServices] IMediator mediator,
+        CancellationToken ct)
+    {
+        var response = await mediator.Send(new GetUserUsedSizeQuery(), ct);
 
         return Ok(response);
     }
