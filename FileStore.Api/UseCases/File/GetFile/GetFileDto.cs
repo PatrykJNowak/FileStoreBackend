@@ -1,4 +1,4 @@
-namespace FileStore.Api.UseCases.GetFile;
+namespace FileStore.Api.UseCases.File.GetFile;
 
 public class GetFileDto
 {

@@ -3,12 +3,12 @@ using FileStore.Infrastructure;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace FileStore.Api.UseCases.GetFileInfo;
+namespace FileStore.Api.UseCases.File.GetFileInfo;
 
 public class GetFileInfoQueryHandler : IRequestHandler<GetFileInfoQuery, List<GetFileInfoDto>>
 {
-    private readonly DatabaseContext _dbContext;
     private readonly ICurrentUser _currentUser;
+    private readonly DatabaseContext _dbContext;
 
     public GetFileInfoQueryHandler(DatabaseContext dbContext, ICurrentUser currentUser)
     {
@@ -18,13 +18,11 @@ public class GetFileInfoQueryHandler : IRequestHandler<GetFileInfoQuery, List<Ge
 
     public async Task<List<GetFileInfoDto>> Handle(GetFileInfoQuery request, CancellationToken ct)
     {
-        var a = _currentUser;
-        
         var response = await _dbContext.File.Select(x => new GetFileInfoDto
         {
             Id = x.Id,
             FileName = x.FileName,
-            FileSize = x.FileSize,
+            FileSize = x.FileSize
         }).ToListAsync(ct);
 
         return response;

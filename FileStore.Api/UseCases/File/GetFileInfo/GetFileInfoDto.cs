@@ -1,4 +1,4 @@
-namespace FileStore.Api.UseCases.GetFileInfo;
+namespace FileStore.Api.UseCases.File.GetFileInfo;
 
 public class GetFileInfoDto
 {

@@ -1,7 +1,7 @@
-using FileStore.Api.UseCases.DeleteFile;
-using FileStore.Api.UseCases.GetFile;
-using FileStore.Api.UseCases.GetFileInfo;
-using FileStore.Api.UseCases.UploadFile;
+using FileStore.Api.UseCases.File.DeleteFile;
+using FileStore.Api.UseCases.File.GetFile;
+using FileStore.Api.UseCases.File.GetFileInfo;
+using FileStore.Api.UseCases.File.UploadFile;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -37,16 +37,18 @@ public class FileController : ControllerBase
         return Ok(File(file.Stream, "application/octet-stream", file.FileName, enableRangeProcessing: true));
     }
 
-    [HttpPost]
+    [HttpPost("{directoryId}")]
     [RequestSizeLimit(long.MaxValue)]
     public async Task<ActionResult> Upload(
         [FromServices] IMediator mediator,
+        [FromRoute] Guid directoryId,
         IFormFile file,
         CancellationToken ct)
     {
         await mediator.Send(new UploadFileCommand()
         {
-            File = file
+            File = file,
+            DictionaryId = directoryId
         }, ct);
 
         return Ok();
@@ -66,4 +68,8 @@ public class FileController : ControllerBase
 
         return Ok();
     }
+    
+    // move file
+    
+    // rename file
 }

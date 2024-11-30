@@ -3,12 +3,12 @@ using FileStore.Infrastructure;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace FileStore.Api.UseCases.GetFile;
+namespace FileStore.Api.UseCases.File.GetFile;
 
 public class GetFileQueryHandler : IRequestHandler<GetFileQuery, GetFileDto>
 {
-    private readonly IFileService _fileService;
     private readonly DatabaseContext _dbContext;
+    private readonly IFileService _fileService;
 
     public GetFileQueryHandler(IFileService fileService, DatabaseContext dbContext)
     {
@@ -20,7 +20,7 @@ public class GetFileQueryHandler : IRequestHandler<GetFileQuery, GetFileDto>
     {
         var file = await _dbContext.File.FirstAsync(x => x.Id == request.FileId, ct);
 
-        return new GetFileDto()
+        return new()
         {
             FileName = file.FileName,
             Stream = await _fileService.GetFileByIdAsync(request.FileId)
