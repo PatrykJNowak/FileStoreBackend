@@ -51,8 +51,4 @@ public class DirectoryController : ControllerBase
 
         return Ok();
     }
-
-    // move?
-    
-    // rename (patch)
 }

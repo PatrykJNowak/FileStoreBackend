@@ -1,6 +1,5 @@
 using FileStore.Api.UseCases.File.DeleteFile;
 using FileStore.Api.UseCases.File.GetFile;
-using FileStore.Api.UseCases.File.GetFileInfo;
 using FileStore.Api.UseCases.File.GetFileList;
 using FileStore.Api.UseCases.File.UploadFile;
 using MediatR;
@@ -27,16 +26,6 @@ public class FileController : ControllerBase
 
         return Ok(response);
     }
-    
-    [HttpGet("GetAll")]
-    public async Task<ActionResult<List<GetFileInfoDto>>> GetFileInfo(
-        [FromServices] IMediator mediator,
-        CancellationToken ct)
-    {
-        var file = await mediator.Send(new GetFileInfoQuery(), ct);
-
-        return file;
-    } 
     
     [HttpGet("{fileId}")]
     public async Task<ActionResult> Get(
@@ -83,8 +72,4 @@ public class FileController : ControllerBase
 
         return Ok();
     }
-    
-    // move file
-    
-    // rename file
 }
