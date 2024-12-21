@@ -22,17 +22,25 @@ public class UploadFileCommandHandler : IRequestHandler<UploadFileCommand, Unit>
     {
         var fileId = await _fileService.UploadAsync(request.File, ct);
 
-        await _dbContext.File.AddAsync(new()
+        try
         {
-            Id = fileId,
-            DirectoryId = request.DirectoryId.GetNullIfGuidIsEmpty(),
-            FileSize = (int) (request.File.Length / 1024),
-            FileName = request.File.FileName,
-            OwnerId = Guid.Parse(_currentUser.UserId!),
-            CreatedAt = DateTime.UtcNow
-        }, ct);
+            await _dbContext.File.AddAsync(new()
+            {
+                Id = fileId,
+                DirectoryId = request.DirectoryId.GetNullIfGuidIsEmpty(),
+                FileSize = (int) (request.File.Length / 1024),
+                FileName = request.File.FileName,
+                OwnerId = Guid.Parse(_currentUser.UserId!),
+                CreatedAt = DateTime.UtcNow
+            }, ct);
 
-        await _dbContext.SaveChangesAsync(ct);
+            await _dbContext.SaveChangesAsync(ct);
+        }
+        catch
+        {
+            await _fileService.DeleteByIdAsync(fileId);
+        }
+
 
         return Unit.Value;
     }
