@@ -41,9 +41,9 @@ public class DeleteDirectoryCommandHandler : IRequestHandler<DeleteDirectoryComm
         return Unit.Value;
     }
 
-    private async Task<List<Guid>> GetDirectoryIds(Guid directoryToRemoveId)
+    private async Task<List<Guid?>> GetDirectoryIds(Guid directoryToRemoveId)
     {
-        var ids = new List<Guid> { directoryToRemoveId };
+        var ids = new List<Guid?> { directoryToRemoveId };
 
         foreach (var directoryId in await _dbContext.Directory.Where(x => x.ParentDirectoryId == directoryToRemoveId).Select(x => x.Id).ToListAsync())
             ids.AddRange(await GetDirectoryIds(directoryId));

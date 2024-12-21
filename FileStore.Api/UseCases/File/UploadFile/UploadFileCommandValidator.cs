@@ -20,10 +20,11 @@ public class UploadFileCommandValidator : AbstractValidator<UploadFileCommand>
         ClassLevelCascadeMode = CascadeMode.Stop;
         RuleLevelCascadeMode = CascadeMode.Stop;
 
-        RuleFor(x => x.DictionaryId)
+        RuleFor(x => x.DirectoryId)
             .NotEmpty()
             .WithMessage("FileId cannot be empty")
             .MustAsync(DirectoryExists)
+            .When(x => x.DirectoryId is not null)
             .WithMessage("File not exists");
 
         RuleFor(x => x.File)
@@ -35,7 +36,7 @@ public class UploadFileCommandValidator : AbstractValidator<UploadFileCommand>
             .WithMessage("Not enough space to upload file");
     }
 
-    private async Task<bool> DirectoryExists(Guid fileId, CancellationToken ct)
+    private async Task<bool> DirectoryExists(Guid? fileId, CancellationToken ct)
     {
         var result = await _dbContext.Directory
             .AnyAsync(x => x.Id == fileId

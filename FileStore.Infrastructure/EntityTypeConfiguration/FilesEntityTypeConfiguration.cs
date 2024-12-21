@@ -17,7 +17,7 @@ public class FilesEntityTypeConfiguration : IEntityTypeConfiguration<File>
             .IsRequired();
 
         builder.Property(x => x.DirectoryId)
-            .IsRequired();
+            .IsRequired(false);
 
         builder.Property(x => x.FileSize)
             .IsRequired();

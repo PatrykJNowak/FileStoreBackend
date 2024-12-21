@@ -24,7 +24,7 @@ public class UploadFileCommandHandler : IRequestHandler<UploadFileCommand, Unit>
         await _dbContext.File.AddAsync(new()
         {
             Id = fileId,
-            DirectoryId = request.DictionaryId,
+            DirectoryId = request.DirectoryId,
             FileSize = (int) (request.File.Length / 1024),
             FileName = request.File.FileName,
             OwnerId = Guid.Parse(_currentUser.UserId!),

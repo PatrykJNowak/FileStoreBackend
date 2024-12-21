@@ -63,7 +63,7 @@ public class FileController : ControllerBase
         await mediator.Send(new UploadFileCommand()
         {
             File = file,
-            DictionaryId = directoryId
+            DirectoryId = directoryId
         }, ct);
 
         return Ok();

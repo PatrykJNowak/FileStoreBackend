@@ -28,7 +28,7 @@ public class GetUserUsedSizeQueryHandler : IRequestHandler<GetUserUsedSizeQuery,
         {
             File = usedSize,
             MaxSize = _configuration.GetValue<int>("UserSpaceLimit"),
-            FillIn = usedSize / _configuration.GetValue<int>("UserSpaceLimit") ,
+            PrecentageFilledIn = usedSize / _configuration.GetValue<int>("UserSpaceLimit") ,
         };
     }
 }
