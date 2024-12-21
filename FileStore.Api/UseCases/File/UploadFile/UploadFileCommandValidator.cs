@@ -24,8 +24,8 @@ public class UploadFileCommandValidator : AbstractValidator<UploadFileCommand>
             .NotEmpty()
             .WithMessage("FileId cannot be empty")
             .MustAsync(DirectoryExists)
-            .When(x => x.DirectoryId is not null)
-            .WithMessage("File not exists");
+            .When(x => x.DirectoryId != Guid.Empty)
+            .WithMessage("Directory not exists");
 
         RuleFor(x => x.File)
             .NotEmpty()

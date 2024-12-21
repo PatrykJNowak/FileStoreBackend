@@ -1,3 +1,4 @@
+using FileStore.Api.Extensions;
 using FileStore.Domain.Interfaces;
 using FileStore.Infrastructure;
 using MediatR;
@@ -24,7 +25,7 @@ public class UploadFileCommandHandler : IRequestHandler<UploadFileCommand, Unit>
         await _dbContext.File.AddAsync(new()
         {
             Id = fileId,
-            DirectoryId = request.DirectoryId,
+            DirectoryId = request.DirectoryId.GetNullIfGuidIsEmpty(),
             FileSize = (int) (request.File.Length / 1024),
             FileName = request.File.FileName,
             OwnerId = Guid.Parse(_currentUser.UserId!),

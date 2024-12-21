@@ -30,6 +30,7 @@ public class DirectoryEntityTypeConfiguration : IEntityTypeConfiguration<Directo
 
         builder.HasMany(x => x.File)
             .WithOne(x => x.Directory)
-            .HasForeignKey(x => x.Id);
+            .HasForeignKey(x => x.Id)
+            .IsRequired(false);
     }
 }

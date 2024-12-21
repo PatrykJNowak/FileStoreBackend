@@ -1,3 +1,4 @@
+using FileStore.Api.Extensions;
 using FileStore.Domain.Interfaces;
 using FileStore.Infrastructure;
 using MediatR;
@@ -20,7 +21,7 @@ public class GetFileListQueryHandler : IRequestHandler<GetFileListQuery, List<Ge
     {
         var response = await _dbContext.File
             .Where(x => x.OwnerId == Guid.Parse(_currentUser.UserId!)
-                && x.DirectoryId == request.DirectoryId)
+                && x.DirectoryId == request.DirectoryId.GetNullIfGuidIsEmpty())
             .Select(x => new GetFileListDto()
             {
                 Id = x.Id,
@@ -29,7 +30,6 @@ public class GetFileListQueryHandler : IRequestHandler<GetFileListQuery, List<Ge
                 CreatedAt = x.CreatedAt
             })
             .ToListAsync(ct);
-
 
         return response;
     }

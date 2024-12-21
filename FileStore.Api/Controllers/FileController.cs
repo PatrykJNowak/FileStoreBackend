@@ -52,11 +52,11 @@ public class FileController : ControllerBase
         return Ok(File(file.Stream, "application/octet-stream", file.FileName, enableRangeProcessing: true));
     }
 
-    [HttpPost("{directoryId}")]
+    [HttpPost]
     [RequestSizeLimit(long.MaxValue)]
     public async Task<ActionResult> Upload(
         [FromServices] IMediator mediator,
-        [FromRoute] Guid directoryId,
+        [FromQuery] Guid directoryId,
         IFormFile file,
         CancellationToken ct)
     {

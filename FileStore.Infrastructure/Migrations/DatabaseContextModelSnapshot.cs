@@ -43,7 +43,7 @@ namespace FileStore.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Directory");
+                    b.ToTable("Directory", (string)null);
                 });
 
             modelBuilder.Entity("FileStore.Domain.Entities.File", b =>
@@ -72,7 +72,7 @@ namespace FileStore.Infrastructure.Migrations
 
                     b.HasIndex("DirectoryId");
 
-                    b.ToTable("File");
+                    b.ToTable("File", (string)null);
                 });
 
             modelBuilder.Entity("FileStore.Domain.IdentityEntity.User", b =>
@@ -124,7 +124,7 @@ namespace FileStore.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("IdentityUsers");
+                    b.ToTable("IdentityUsers", (string)null);
                 });
 
             modelBuilder.Entity("FileStore.Domain.Entities.File", b =>

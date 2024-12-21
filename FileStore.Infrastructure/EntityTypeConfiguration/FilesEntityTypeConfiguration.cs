@@ -17,7 +17,7 @@ public class FilesEntityTypeConfiguration : IEntityTypeConfiguration<File>
             .IsRequired();
 
         builder.Property(x => x.DirectoryId)
-            .IsRequired(false);
+            .IsRequired();
 
         builder.Property(x => x.FileSize)
             .IsRequired();
@@ -33,6 +33,7 @@ public class FilesEntityTypeConfiguration : IEntityTypeConfiguration<File>
 
         builder.HasOne(x => x.Directory)
             .WithMany(x => x.File)
-            .HasForeignKey(x => x.Id);
+            .HasForeignKey(x => x.Id)
+            .IsRequired(false);
     }
 }
