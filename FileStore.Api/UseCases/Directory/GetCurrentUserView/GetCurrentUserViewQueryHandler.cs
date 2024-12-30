@@ -25,6 +25,7 @@ public class GetCurrentUserViewQueryHandler : IRequestHandler<GetCurrentUserView
             {
                 Id = x.Id,
                 DirectoryName = x.DirectoryName,
+                ParentId = x.ParentDirectoryId,                
                 CreatedAt = x.CreatedAt
             })
             .ToListAsync(ct);

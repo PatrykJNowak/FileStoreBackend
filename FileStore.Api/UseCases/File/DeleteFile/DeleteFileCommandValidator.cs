@@ -9,7 +9,7 @@ public class DeleteFileCommandValidator : AbstractValidator<DeleteFileCommand>
 {
     private readonly DatabaseContext _dbContext;
     private readonly ICurrentUser _currentUser;
-    
+
     public DeleteFileCommandValidator(DatabaseContext dbContext, ICurrentUser currentUser)
     {
         _dbContext = dbContext;
@@ -18,15 +18,24 @@ public class DeleteFileCommandValidator : AbstractValidator<DeleteFileCommand>
         RuleFor(x => x.FileId)
             .NotEmpty()
             .WithMessage("FileId cannot be empty")
-            .MustAsync(DirectoryExists)
-            .WithMessage("File not exists");
+            .MustAsync(FileExist)
+            .WithMessage("File not exist")
+            .MustAsync(UserCanRemoveFile)
+            .WithMessage("Prohibited operation! You can not remove other user file");
     }
-    
-    private async Task<bool> DirectoryExists(Guid fileId, CancellationToken ct)
+
+    private async Task<bool> UserCanRemoveFile(Guid fileId, CancellationToken ct)
     {
-        var result = await _dbContext.Directory
-            .AnyAsync(x => x.Id == fileId
-                && x.OwnerId == Guid.Parse(_currentUser.UserId!), ct);
+        var result = await _dbContext.File.AnyAsync(
+            x => x.Id == fileId && 
+                x.OwnerId == Guid.Parse(_currentUser.UserId!), ct);
+        return result;
+    }
+ 
+    private async Task<bool> FileExist(Guid fileId, CancellationToken ct)
+    {
+        var result = await _dbContext.File
+            .AnyAsync(x => x.Id == fileId, ct);
         return result;
     }
 }

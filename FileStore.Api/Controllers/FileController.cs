@@ -6,16 +6,17 @@ using FileStore.Api.UseCases.File.UploadFile;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Net.Http.Headers;
 
 namespace FileStore.Api.Controllers;
 
 [ApiController]
 [Authorize]
-[Route("[controller]/api")]
+[Route("api/[controller]")]
 public class FileController : ControllerBase
 {
-    [HttpGet("GetFileList")]
-    public async Task<ActionResult<List<GetFileListQuery>>> GetFileList(
+    [HttpGet("GetList")]
+    public async Task<ActionResult<List<GetFileListQuery>>> GetList(
         [FromServices] IMediator mediator,
         Guid directoryId,
         CancellationToken ct)
@@ -49,7 +50,12 @@ public class FileController : ControllerBase
             FileId = fileId
         }, ct);
 
-        return Ok(File(file.Stream, "application/octet-stream", file.FileName, enableRangeProcessing: true));
+        // return new FileStreamResult(file.Stream, new MediaTypeHeaderValue("application/octet-stream"))
+        // {
+        //     FileDownloadName = file.FileName
+        // };
+        
+        return File(file.Stream, "application/octet-stream", file.FileName, enableRangeProcessing: true);
     }
 
     [HttpPost]

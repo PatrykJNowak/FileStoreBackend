@@ -1,4 +1,3 @@
-using FileStore.Api.UseCases.File.DeleteFile;
 using FileStore.Domain.Interfaces;
 using FileStore.Infrastructure;
 using FluentValidation;
@@ -6,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FileStore.Api.UseCases.File.GetFile;
 
-public class GetFileQueryValidator : AbstractValidator<DeleteFileCommand>
+public class GetFileQueryValidator : AbstractValidator<GetFileQuery>
 {
     private readonly DatabaseContext _dbContext;
     private readonly ICurrentUser _currentUser;
@@ -20,12 +19,12 @@ public class GetFileQueryValidator : AbstractValidator<DeleteFileCommand>
             .NotEmpty()
             .WithMessage("FileId cannot be empty")
             .MustAsync(DirectoryExists)
-            .WithMessage("File not exists");
+            .WithMessage("File not exist");
     }
     
     private async Task<bool> DirectoryExists(Guid fileId, CancellationToken ct)
     {
-        var result = await _dbContext.Directory
+        var result = await _dbContext.File
             .AnyAsync(x => x.Id == fileId
                 && x.OwnerId == Guid.Parse(_currentUser.UserId!), ct);
         return result;

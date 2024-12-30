@@ -58,6 +58,17 @@ builder.Services.AddIdentityApiEndpoints<User>()
     .AddEntityFrameworkStores<IdentityDatabaseContext>()
     .AddApiEndpoints();
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowReactApp", policy =>
+    {
+        policy.WithOrigins("http://localhost:5173") // React app URL
+            .AllowAnyMethod()
+            .AllowAnyHeader() 
+            .AllowCredentials(); 
+    });
+});
+
 builder.Services.Configure<FileStoreSettings>(
     builder.Configuration.GetSection("FileStoreSettings")
 );
@@ -86,6 +97,7 @@ var app = builder.Build();
 app.MigrateDbContext<DatabaseContext>();
 app.MigrateDbContext<IdentityDatabaseContext>();
 app.UseExceptionHandler();
+app.UseCors("AllowReactApp");
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

@@ -28,7 +28,7 @@ public class GetFileListQueryHandler : IRequestHandler<GetFileListQuery, List<Ge
                 FileName = x.FileName,
                 FileSize = x.FileSize,
                 CreatedAt = x.CreatedAt
-            })
+            }) 
             .ToListAsync(ct);
 
         return response;

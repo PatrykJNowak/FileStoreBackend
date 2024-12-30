@@ -9,13 +9,13 @@ namespace FileStore.Api.Controllers;
 
 [ApiController]
 [Authorize]
-[Route("[controller]/api")]
+[Route("api/[controller]")]
 public class DirectoryController : ControllerBase
 {
     [HttpGet]
     public async Task<ActionResult<GetCurrentUserViewDto>> GetCurrentUserView(
         [FromServices] IMediator mediator,
-        Guid? directoryId,
+        [FromQuery] Guid? directoryId,
         CancellationToken ct)
     {
         var response = await mediator.Send(new GetCurrentUserViewQuery()
@@ -25,7 +25,7 @@ public class DirectoryController : ControllerBase
 
         return Ok(response);
     }
-    
+
     [HttpPost]
     public async Task<ActionResult<Guid>> Create(
         [FromServices] IMediator mediator,
@@ -37,7 +37,7 @@ public class DirectoryController : ControllerBase
 
         return Ok(directoryId);
     }
-    
+
     [HttpDelete("{directoryId}")]
     public async Task<ActionResult> Delete(
         [FromServices] IMediator mediator,
