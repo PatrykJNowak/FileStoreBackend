@@ -18,6 +18,10 @@ public class CreateDirectoryCommandValidator : AbstractValidator<CreateDirectory
             .MustAsync(DirectoryExists)
             .When(x => x.ParentDirectoryId != null)
             .WithValidationError("Directory doesn't exist");
+
+        RuleFor(x => x.DirectoryName)
+            .NotEmpty()
+            .WithValidationError("Directory name cannot be empty");
     }
     
     private async Task<bool> DirectoryExists(Guid? directoryId, CancellationToken ct)

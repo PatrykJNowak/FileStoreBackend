@@ -55,7 +55,7 @@ public class FileController : ControllerBase
         //     FileDownloadName = file.FileName
         // };
         
-        return File(file.Stream, "application/octet-stream", file.FileName, enableRangeProcessing: true);
+        return File(file.Stream, "application/octet-stream", file.FileName, true);
     }
 
     [HttpPost]
